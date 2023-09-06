@@ -36,11 +36,21 @@
         }).then(response => {
             if (response.ok) {
                 console.log(`Das Fahrzeug ${vehicleId} ist wieder einsatzbereit.`);
-                alert(`Das Fahrzeug "${caption}" ist wieder einsatzbereit.`);
+                // Keine Meldung mehr anzeigen
             } else {
                 console.error(`Fehler beim Setzen des Fahrzeugs ${vehicleId} wieder einsatzbereit.`);
             }
         });
+    }
+
+    // Funktion zum Ausblenden der Meldung nach 5 Sekunden
+    function hideAlert() {
+        const alertElement = document.querySelector('.alert-dismissible');
+        if (alertElement) {
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
     }
 
     // Hauptfunktion, um den Prozess zu steuern
@@ -67,7 +77,10 @@
                         const { id, caption } = selectedVehicle;
                         setVehicleOutOfService(id);
                         localStorage.setItem('outOfServiceVehicle', JSON.stringify({ vehicleId: id, timestamp: new Date().getTime(), caption }));
-                        alert(`Das Fahrzeug "${caption}" ist wegen Reparaturarbeiten außer Dienst.`);
+                        // Meldung anzeigen und dann ausblenden
+                        const alertText = `Das Fahrzeug "${caption}" ist wegen Reparaturarbeiten außer Dienst.`;
+                        alert(alertText);
+                        hideAlert();
                     }
                 });
         }
