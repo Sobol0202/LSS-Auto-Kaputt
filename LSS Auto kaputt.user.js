@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Auto kaputt
 // @namespace    www.leitstellenspiel.de
-// @version      1.1
+// @version      1.2
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/
@@ -52,23 +52,36 @@
         }
     }
 
+    // Funktion zur Berechnung des Intervalls basierend auf der Anzahl der Fahrzeuge
+    function calculateInterval(vehicleCount) {
+        const minTime = Math.pow(1.666649e-07 * vehicleCount, -0.307978);
+        const maxTime = minTime + (minTime * 0.5);
+        return getRandomInt(minTime, maxTime);
+    }
+
     // Hauptfunktion, um den Prozess zu steuern
     function simulateVehicleFailure() {
-        // Prüfen, ob bereits ein Fahrzeug außer Dienst ist
-        const storedVehicle = localStorage.getItem('outOfServiceVehicle');
-        if (storedVehicle) {
-            const { vehicleId, timestamp, caption } = JSON.parse(storedVehicle);
-            const currentTime = new Date().getTime();
-            if (currentTime - timestamp >= 600000) { // 10 Minuten Reparaturzeit
-                // Fahrzeug ist seit mindestens 10 Minuten außer Dienst, wieder einsatzbereit setzen
-                setVehicleInService(vehicleId, caption);
-                localStorage.removeItem('outOfServiceVehicle');
-            }
-        } else {
-            // Fahrzeug auswählen und außer Dienst setzen
-            fetch('https://www.leitstellenspiel.de/api/vehicles')
-                .then(response => response.json())
-                .then(data => {
+        // Fahrzeuganzahl aus der API abrufen
+        fetch('https://www.leitstellenspiel.de/api/vehicles')
+            .then(response => response.json())
+            .then(data => {
+                const vehicleCount = data.length;
+
+                // Berechnen Sie das Intervall basierend auf der Fahrzeuganzahl
+                const interval = calculateInterval(vehicleCount);
+
+                // Prüfen, ob bereits ein Fahrzeug außer Dienst ist
+                const storedVehicle = localStorage.getItem('outOfServiceVehicle');
+                if (storedVehicle) {
+                    const { vehicleId, timestamp, caption } = JSON.parse(storedVehicle);
+                    const currentTime = new Date().getTime();
+                    if (currentTime - timestamp >= 600000) { // 10 Minuten Reparaturzeit
+                        // Fahrzeug ist seit mindestens 10 Minuten außer Dienst, wieder einsatzbereit setzen
+                        setVehicleInService(vehicleId, caption);
+                        localStorage.removeItem('outOfServiceVehicle');
+                    }
+                } else {
+                    // Fahrzeug auswählen und außer Dienst setzen
                     const vehiclesWithFMS2 = data.filter(vehicle => vehicle.fms_real === 2);
                     if (vehiclesWithFMS2.length > 0) {
                         const randomIndex = getRandomInt(0, vehiclesWithFMS2.length - 1);
@@ -81,14 +94,11 @@
                         alert(alertText);
                         hideAlert();
                     }
-                });
-        }
+                }
 
-        // Zufälliges Intervall für die Simulation festlegen (zwischen 30 und 60 Minuten)
-        const interval = getRandomInt(1800000, 3600000);
-
-        // Simulation in festgelegtem Intervall ausführen
-        setTimeout(simulateVehicleFailure, interval);
+                // Simulation in festgelegtem Intervall ausführen
+                setTimeout(simulateVehicleFailure, interval);
+            });
     }
 
     // Skript starten
