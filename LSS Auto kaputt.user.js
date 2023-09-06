@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Auto kaputt
 // @namespace    www.leitstellenspiel.de
-// @version      1.2
+// @version      1.3
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/
@@ -52,12 +52,12 @@
         }
     }
 
-    // Funktion zur Berechnung des Intervalls basierend auf der Anzahl der Fahrzeuge
-    function calculateInterval(vehicleCount) {
-        const minTime = Math.pow(1.666649e-07 * vehicleCount, -0.307978);
-        const maxTime = minTime + (minTime * 0.5);
-        return getRandomInt(minTime, maxTime);
-    }
+function calculateInterval(vehicleCount) {
+    const minTime = Math.pow(1.666649e-07 * vehicleCount, -0.307978);
+    const maxTime = minTime + (minTime * 0.5);
+    // Umrechnung von Millisekunden in Minuten
+    return getRandomInt(minTime, maxTime) * 0.001 / 60;
+}
 
     // Hauptfunktion, um den Prozess zu steuern
     function simulateVehicleFailure() {
@@ -97,7 +97,7 @@
                 }
 
                 // Simulation in festgelegtem Intervall ausführen
-                setTimeout(simulateVehicleFailure, interval);
+    setTimeout(simulateVehicleFailure, calculateInterval(vehicleCount));
             });
     }
 
