@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Auto kaputt
 // @namespace    www.leitstellenspiel.de
-// @version      1.0
+// @version      1.1
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/
@@ -36,7 +36,6 @@
         }).then(response => {
             if (response.ok) {
                 console.log(`Das Fahrzeug ${vehicleId} ist wieder einsatzbereit.`);
-                // Keine Meldung mehr anzeigen
             } else {
                 console.error(`Fehler beim Setzen des Fahrzeugs ${vehicleId} wieder einsatzbereit.`);
             }
