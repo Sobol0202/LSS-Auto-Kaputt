@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Auto kaputt
 // @namespace    www.leitstellenspiel.de
-// @version      1.5alpha
+// @version      1.6alpha
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/
@@ -79,7 +79,7 @@ function simulateVehicleFailure() {
                         .then(response => response.json())
                         .then(distanceData => {
                             const distance = distanceData.distance_km;
-                            const probability = Math.cosh((-3.45427e-05) * (distance - 32928));
+                            const probability = Math.cosh((6.86197e-05) * (distance - 1.09594));
 
                             if (probability >= 100 || probability >= Math.random() * 100) {
                                 // Das Fahrzeug erleidet einen Totalschaden
