@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Auto kaputt
 // @namespace    www.leitstellenspiel.de
-// @version      1.7alpha
+// @version      1.8alpha
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/
@@ -25,6 +25,19 @@
                 console.log(`Das Fahrzeug ${vehicleId} ist außer Dienst.`);
             } else {
                 console.error(`Fehler beim Setzen des Fahrzeugs ${vehicleId} außer Dienst.`);
+            }
+        });
+    }
+
+    // Funktion, um ein Fahrzeug wieder einsatzbereit zu setzen
+    function setVehicleInService(vehicleId, caption) {
+        fetch(`https://www.leitstellenspiel.de/vehicles/${vehicleId}/set_fms/2`, {
+            method: 'GET'
+        }).then(response => {
+            if (response.ok) {
+                console.log(`Das Fahrzeug ${vehicleId} ist wieder einsatzbereit.`);
+            } else {
+                console.error(`Fehler beim Setzen des Fahrzeugs ${vehicleId} wieder einsatzbereit.`);
             }
         });
     }
