@@ -4,7 +4,7 @@
 // @version      1.11
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
-// @match        https://www.leitstellenspiel.de/*
+// @match        https://www.leitstellenspiel.de/
 // @grant        none
 // ==/UserScript==
 
