@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Auto kaputt
 // @namespace    www.leitstellenspiel.de
-// @version      1.11
+// @version      1.12
 // @description  Simuliert den Ausfall von Fahrzeugen aus technischen Gründen
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/
